@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/broker.dir/cmd/broker/main.cpp.o -o broker  libmq.a 

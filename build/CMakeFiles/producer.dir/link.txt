@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/producer.dir/cmd/producer/main.cpp.o -o producer  libmq.a 
