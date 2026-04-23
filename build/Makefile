@@ -264,6 +264,30 @@ src/net.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/src/net.cpp.s
 .PHONY : src/net.cpp.s
 
+src/protocol.o: src/protocol.cpp.o
+.PHONY : src/protocol.o
+
+# target to build an object file
+src/protocol.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/src/protocol.cpp.o
+.PHONY : src/protocol.cpp.o
+
+src/protocol.i: src/protocol.cpp.i
+.PHONY : src/protocol.i
+
+# target to preprocess a source file
+src/protocol.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/src/protocol.cpp.i
+.PHONY : src/protocol.cpp.i
+
+src/protocol.s: src/protocol.cpp.s
+.PHONY : src/protocol.s
+
+# target to generate assembly for a file
+src/protocol.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/src/protocol.cpp.s
+.PHONY : src/protocol.cpp.s
+
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -288,6 +312,9 @@ help:
 	@echo "... src/net.o"
 	@echo "... src/net.i"
 	@echo "... src/net.s"
+	@echo "... src/protocol.o"
+	@echo "... src/protocol.i"
+	@echo "... src/protocol.s"
 .PHONY : help
 
 

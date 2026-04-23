@@ -1,6 +1,8 @@
 file(REMOVE_RECURSE
   "CMakeFiles/mq.dir/src/net.cpp.o"
   "CMakeFiles/mq.dir/src/net.cpp.o.d"
+  "CMakeFiles/mq.dir/src/protocol.cpp.o"
+  "CMakeFiles/mq.dir/src/protocol.cpp.o.d"
   "libmq.a"
   "libmq.pdb"
 )

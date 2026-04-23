@@ -9,6 +9,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 # The set of dependency files which are needed:
 set(CMAKE_DEPENDS_DEPENDENCY_FILES
   "/home/acer/桌面/mini-mq/src/net.cpp" "CMakeFiles/mq.dir/src/net.cpp.o" "gcc" "CMakeFiles/mq.dir/src/net.cpp.o.d"
+  "/home/acer/桌面/mini-mq/src/protocol.cpp" "CMakeFiles/mq.dir/src/protocol.cpp.o" "gcc" "CMakeFiles/mq.dir/src/protocol.cpp.o.d"
   )
 
 # Targets to which this target links which contain Fortran sources.

@@ -83,17 +83,33 @@ CMakeFiles/mq.dir/src/net.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mq.dir/src/net.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/acer/桌面/mini-mq/src/net.cpp -o CMakeFiles/mq.dir/src/net.cpp.s
 
+CMakeFiles/mq.dir/src/protocol.cpp.o: CMakeFiles/mq.dir/flags.make
+CMakeFiles/mq.dir/src/protocol.cpp.o: /home/acer/桌面/mini-mq/src/protocol.cpp
+CMakeFiles/mq.dir/src/protocol.cpp.o: CMakeFiles/mq.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/home/acer/桌面/mini-mq/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/mq.dir/src/protocol.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/mq.dir/src/protocol.cpp.o -MF CMakeFiles/mq.dir/src/protocol.cpp.o.d -o CMakeFiles/mq.dir/src/protocol.cpp.o -c /home/acer/桌面/mini-mq/src/protocol.cpp
+
+CMakeFiles/mq.dir/src/protocol.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/mq.dir/src/protocol.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/acer/桌面/mini-mq/src/protocol.cpp > CMakeFiles/mq.dir/src/protocol.cpp.i
+
+CMakeFiles/mq.dir/src/protocol.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/mq.dir/src/protocol.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/acer/桌面/mini-mq/src/protocol.cpp -o CMakeFiles/mq.dir/src/protocol.cpp.s
+
 # Object files for target mq
 mq_OBJECTS = \
-"CMakeFiles/mq.dir/src/net.cpp.o"
+"CMakeFiles/mq.dir/src/net.cpp.o" \
+"CMakeFiles/mq.dir/src/protocol.cpp.o"
 
 # External object files for target mq
 mq_EXTERNAL_OBJECTS =
 
 libmq.a: CMakeFiles/mq.dir/src/net.cpp.o
+libmq.a: CMakeFiles/mq.dir/src/protocol.cpp.o
 libmq.a: CMakeFiles/mq.dir/build.make
 libmq.a: CMakeFiles/mq.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/acer/桌面/mini-mq/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libmq.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/home/acer/桌面/mini-mq/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX static library libmq.a"
 	$(CMAKE_COMMAND) -P CMakeFiles/mq.dir/cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/mq.dir/link.txt --verbose=$(VERBOSE)
 

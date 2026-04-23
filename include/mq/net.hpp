@@ -26,9 +26,7 @@ namespace mq{
 
     int create_listen_socket(const std::string& host, uint16_t port, int backlog=128);
     // 创建一个监听套接字，绑定到指定的主机地址和端口，并开始监听传入的连接请求
-    int create_connect_socket(const std::string& host, uint16_t port);
-    // 创建一个连接套接字，连接到指定的主机地址和端口
-
+    
     int connect_socket(const std::string& host, uint16_t port);
     // 创建一个连接套接字，连接到指定的主机地址和端口，并返回套接字文件描述符
 

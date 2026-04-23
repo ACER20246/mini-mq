@@ -1,9 +1,14 @@
 cmake_minimum_required(VERSION 3.16)
-project(mini-mq LANGUAGES CXX)
+project(mini_mq LANGUAGES CXX)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-add_library(mq src/net.cpp)
+add_library(mq
+  src/net.cpp
+  src/protocol.cpp
+)
+
 target_include_directories(mq PUBLIC include)
 
 add_executable(broker cmd/broker/main.cpp)
