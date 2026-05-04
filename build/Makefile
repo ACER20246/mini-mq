@@ -240,6 +240,30 @@ cmd/producer/main.cpp.s:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/producer.dir/build.make CMakeFiles/producer.dir/cmd/producer/main.cpp.s
 .PHONY : cmd/producer/main.cpp.s
 
+src/broker.o: src/broker.cpp.o
+.PHONY : src/broker.o
+
+# target to build an object file
+src/broker.cpp.o:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/src/broker.cpp.o
+.PHONY : src/broker.cpp.o
+
+src/broker.i: src/broker.cpp.i
+.PHONY : src/broker.i
+
+# target to preprocess a source file
+src/broker.cpp.i:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/src/broker.cpp.i
+.PHONY : src/broker.cpp.i
+
+src/broker.s: src/broker.cpp.s
+.PHONY : src/broker.s
+
+# target to generate assembly for a file
+src/broker.cpp.s:
+	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/src/broker.cpp.s
+.PHONY : src/broker.cpp.s
+
 src/net.o: src/net.cpp.o
 .PHONY : src/net.o
 
@@ -309,6 +333,9 @@ help:
 	@echo "... cmd/producer/main.o"
 	@echo "... cmd/producer/main.i"
 	@echo "... cmd/producer/main.s"
+	@echo "... src/broker.o"
+	@echo "... src/broker.i"
+	@echo "... src/broker.s"
 	@echo "... src/net.o"
 	@echo "... src/net.i"
 	@echo "... src/net.s"

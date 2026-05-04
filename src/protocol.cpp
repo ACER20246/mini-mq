@@ -19,8 +19,8 @@ namespace mq{
         put_raw(buf,&be,sizeof(be));
     }
     void put_uint64(std::vector<uint8_t>& buf,uint64_t v){
-        uint32_t high=htonl(static_cast<uint32_t>(v>>32));
-        uint32_t low=htonl(static_cast<uint32_t>(v&0xFFFFFFFF));
+        uint32_t high=static_cast<uint32_t>(v>>32);
+        uint32_t low=static_cast<uint32_t>(v&0xFFFFFFFFu);
         put_uint32(buf,high);
         put_uint32(buf,low);
     }//put_uint64函数将一个64位无符号整数从主机字节序转换为网络字节序（大端字节序），并将其写入到字节向量中。
@@ -142,7 +142,7 @@ namespace mq{
         size_t off=0;
         if(!get_string_u16(frame.payload,off,out.topic)) return false;
         if(!get_uint64(frame.payload,off,out.offset)) return false;
-        if(!get_uint32(frame.payload,off,out.max_bytes)) return false;
+        if(!get_uint32(frame.payload,off,out.max_msgs)) return false;
         return true;
     }
     //decode_fetch_req函数将一个消息帧解码成一个获取请求对象。它首先检查消息帧的类型是否为MessageType::Fetch，如果不是，则返回false。

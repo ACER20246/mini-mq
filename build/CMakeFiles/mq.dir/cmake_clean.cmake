@@ -1,4 +1,6 @@
 file(REMOVE_RECURSE
+  "CMakeFiles/mq.dir/src/broker.cpp.o"
+  "CMakeFiles/mq.dir/src/broker.cpp.o.d"
   "CMakeFiles/mq.dir/src/net.cpp.o"
   "CMakeFiles/mq.dir/src/net.cpp.o.d"
   "CMakeFiles/mq.dir/src/protocol.cpp.o"

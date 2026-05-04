@@ -75,11 +75,11 @@ namespace mq{
     struct FetchReq{
         std::string topic;
         uint64_t offset{0};
-        uint32_t max_bytes{100};
+        uint32_t max_msgs{100};
     };
     // FetchReq结构体表示一个获取请求，包含主题和偏移量。主题是一个字符串，
     //偏移量是一个64位无符号整数，表示从哪个位置开始获取消息
-    // max_bytes是一个32位无符号整数，表示一次获取的最大字节数
+    // max_msgs是一个32位无符号整数，表示一次获取的最大消息数量
 
     bool decode_produce_req(const Frame& frame,ProduceReq& out);//生产请求
     // decode_produce_req函数将一个消息帧解码成一个生产请求对象

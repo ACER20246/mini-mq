@@ -87,12 +87,12 @@ clean: CMakeFiles/consumer.dir/clean
 CMakeFiles/mq.dir/all:
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/mq.dir/build.make CMakeFiles/mq.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/acer/桌面/mini-mq/build/CMakeFiles --progress-num=5,6,7 "Built target mq"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/acer/桌面/mini-mq/build/CMakeFiles --progress-num=5,6,7,8 "Built target mq"
 .PHONY : CMakeFiles/mq.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/mq.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 4
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/mq.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 0
 .PHONY : CMakeFiles/mq.dir/rule
@@ -118,7 +118,7 @@ CMakeFiles/broker.dir/all: CMakeFiles/mq.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/broker.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/broker.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 0
 .PHONY : CMakeFiles/broker.dir/rule
@@ -139,12 +139,12 @@ CMakeFiles/broker.dir/clean:
 CMakeFiles/producer.dir/all: CMakeFiles/mq.dir/all
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/producer.dir/build.make CMakeFiles/producer.dir/depend
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/producer.dir/build.make CMakeFiles/producer.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/acer/桌面/mini-mq/build/CMakeFiles --progress-num=8,9 "Built target producer"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --progress-dir=/home/acer/桌面/mini-mq/build/CMakeFiles --progress-num=9,10 "Built target producer"
 .PHONY : CMakeFiles/producer.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/producer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/producer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 0
 .PHONY : CMakeFiles/producer.dir/rule
@@ -170,7 +170,7 @@ CMakeFiles/consumer.dir/all: CMakeFiles/mq.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/consumer.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 6
 	$(MAKE) $(MAKESILENT) -f CMakeFiles/Makefile2 CMakeFiles/consumer.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/acer/桌面/mini-mq/build/CMakeFiles 0
 .PHONY : CMakeFiles/consumer.dir/rule

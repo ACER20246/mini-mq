@@ -1,2 +1,2 @@
-/usr/bin/ar qc libmq.a CMakeFiles/mq.dir/src/net.cpp.o CMakeFiles/mq.dir/src/protocol.cpp.o
+/usr/bin/ar qc libmq.a CMakeFiles/mq.dir/src/net.cpp.o CMakeFiles/mq.dir/src/protocol.cpp.o CMakeFiles/mq.dir/src/broker.cpp.o
 /usr/bin/ranlib libmq.a

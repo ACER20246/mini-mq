@@ -7,6 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_library(mq
   src/net.cpp
   src/protocol.cpp
+  src/broker.cpp
 )
 
 target_include_directories(mq PUBLIC include)

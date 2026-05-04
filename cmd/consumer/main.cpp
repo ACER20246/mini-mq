@@ -6,12 +6,14 @@
 #include <vector>
 #include <cerrno>
 #include <cstring>
+#include <thread>
+#include <chrono>
 
 #include <unistd.h>
 static std::string parse_arg(int argc,char *argv[],const std::string& key,const std::string& default_value){
     for(int i=1;i<argc-1;i++){
-        if(argv[i]==key&&i+1<argc){
-            return argv[i+1];
+        if(std::string(argv[i])==key&&i+1<argc){
+            return std::string(argv[i+1]);
         }
     }
     return default_value;
@@ -19,27 +21,79 @@ static std::string parse_arg(int argc,char *argv[],const std::string& key,const 
 
 static uint64_t parse_uint64(int argc,char *argv[],const std::string& key,uint64_t default_value){
     for(int i=1;i<argc-1;i++){
-        if(argv[i]==key && i+1<argc){
+        if(std::string(argv[i])==key && i+1<argc){
             return static_cast<uint64_t>(std::strtoull(argv[i+1], nullptr, 10));
         }
     }
     return default_value;
 }
 
+static bool parse_flag(int argc,char *argv[],const std::string& key){
+    for(int i=1;i<argc;i++){
+        if(std::string(argv[i])==key){
+            return true;
+        }
+    }
+    return false;
+}
+
 static uint32_t parse_uint32(int argc,char *argv[],const std::string& key,uint32_t default_value){
     for(int i=1;i<argc-1;i++){
-        if(argv[i]==key && i+1<argc){
+        if(std::string(argv[i])==key && i+1<argc){
             return static_cast<uint32_t>(std::strtoul(argv[i+1], nullptr, 10));
         }
     }
     return default_value;
 }
 
+static bool decode_fetch_resp(const mq::Frame& f,std::vector<std::pair<uint64_t,std::string>>& out,std::string& err){
+    if(f.type==mq::MessageType::Resp){
+        size_t off=0;
+        uint32_t msg_count=0;
+        if(!mq::get_uint32(f.payload,off,msg_count)){
+            err="bad resp";
+            return false;
+        }
+        out.clear();
+        out.reserve(msg_count);
+        for(uint32_t i=0;i<msg_count;i++){
+            uint64_t offv=0;
+            uint32_t len=0;
+            if(!mq::get_uint64(f.payload,off,offv)||!mq::get_uint32(f.payload,off,len)){
+                err="bad item";
+                return false;
+            }
+            if(off+len>f.payload.size()){
+                err="bad item len";
+                return false;
+            }
+            std::string msg(reinterpret_cast<const char*>(f.payload.data()+off),len);
+            off+=len;
+            out.emplace_back(offv,std::move(msg));
+        }
+        return true;
+    }
+    if(f.type==mq::MessageType::Error){
+        size_t off=0;
+        uint32_t code=0;
+        std::string msg;
+        mq::get_uint32(f.payload,off,code);
+        mq::get_string_u16(f.payload,off,msg);
+        err="error error "+std::to_string(code)+"msg= "+msg;
+        return false;
+    }
+    err="unexpected message type ";
+    return false;
+}
+
 int main(int argc,char *argv[]){
     mq::HostPort hp=mq::parse_host_port(argc,argv,mq::HostPort{"127.0.0.1", 9092});
     std::string topic=parse_arg(argc,argv,"--topic","test");
     uint64_t offset=parse_uint64(argc,argv,"--offset",0);
-    uint32_t max_bytes=parse_uint32(argc,argv,"--max",100);
+    uint32_t max_msgs=parse_uint32(argc,argv,"--max",100);
+    bool follow=parse_flag(argc,argv,"--follow");
+    uint32_t interval_ms=parse_uint32(argc,argv,"--interval-ms",200);
+
 
     int fd=mq::connect_socket(hp.host,hp.port);
     if(fd<0){
@@ -47,76 +101,64 @@ int main(int argc,char *argv[]){
         return 1;
     }
 
-    std::vector<uint8_t> payload;
-    mq::put_string_u16(payload, topic);
-    mq::put_uint64(payload, offset);
-    mq::put_uint32(payload, max_bytes);
-
-    auto frame=mq::encode_frame(mq::MessageType::Fetch,0,payload);
-    if(mq::write_n(fd, frame.data(), frame.size())<0){
-        std::cerr<<"Failed to send request - "<<std::strerror(errno)<<std::endl;
-        close(fd);
-        return 1;
-    }
-
-    std::vector<uint8_t> inbuf;
-    inbuf.reserve(1024);
+    std::vector<uint8_t> buf;
+    buf.reserve(8192);
 
     while(true){
-        uint8_t tmp[4096];
-        ssize_t n=::read(fd, tmp, sizeof(tmp));
+        std::vector<uint8_t> payload;
+        mq::put_string_u16(payload, topic);
+        mq::put_uint64(payload, offset);
+        mq::put_uint32(payload, max_msgs);
 
-        if(n==0){
-            std::cerr<<"Connection closed by server"<<std::endl;
-            break;
+        auto frame=mq::encode_frame(mq::MessageType::Fetch,0,payload);
+        if(mq::write_n(fd, frame.data(), frame.size())<0){
+            std::cerr<<"Failed to send request - "<<std::strerror(errno)<<std::endl;
+            close(fd);
+            return 1;
         }
 
-        if(n<0){
-            if(errno==EINTR){
-                continue;
-            }
-            std::cerr<<"Failed to read from socket - "<<std::strerror(errno)<<std::endl;
-            break;
-        }
-        inbuf.insert(inbuf.end(), tmp, tmp + n);
-
-        mq::Frame frame;
+        mq::Frame f;
         mq::ErrorCode err;
-        if(mq::try_decode_one(inbuf,frame,err)){
-            if(frame.type==mq::MessageType::Resp){
-                size_t off=0;
-                uint32_t msg_count=0;
-                if(!mq::get_uint32(frame.payload, off, msg_count)){
-                    std::cerr<<"Failed to parse response: invalid message count"<<std::endl;
-                    break;
-                }
-                for(uint32_t i=0;i<msg_count;i++){
-                    uint64_t offv;
-                    uint32_t len;
-                    if(!mq::get_uint64(frame.payload, off, offv) || !mq::get_uint32(frame.payload, off, len)){
-                        std::cerr<<"Failed to parse response: invalid message format"<<std::endl;
-                        break;
-                    }
-                    if(off+len>frame.payload.size()){
-                        std::cerr<<"Failed to parse response: message length exceeds payload"<<std::endl;
-                        break;
-                    }
-                    std::string msg(reinterpret_cast<const char*>(frame.payload.data() + off), len);
-                    off+=len;
-                    std::cout<<"Received message at offset "<<offv<<": "<<msg<<std::endl;
-                }
-            }else if(frame.type==mq::MessageType::Error){
-                size_t off=0;
-                uint32_t code;
-                std::string msg2;
-                mq::get_uint32(frame.payload, off, code);
-                mq::get_string_u16(frame.payload, off, msg2);
-                std::cerr<<"Received error from server: "<<code<<" - "<<msg2<<std::endl;
+        while(!mq::try_decode_one(buf,f,err)){
+            if(err!=mq::ErrorCode::Ok){
+                std::cerr<<"consumer : decode error"<<std::endl;
+                ::close(fd);
+                return 1;
             }
-            break;
-        }else if(err!=mq::ErrorCode::Ok){
-            std::cerr<<"Failed to decode frame: "<<static_cast<int>(err)<<std::endl;
-            break;
+            uint8_t tmpbuf[4096];
+            ssize_t n=::read(fd,tmpbuf,sizeof(tmpbuf));
+            if(n<0){
+                if(errno==EINTR){
+                    continue;
+                }
+                std::cerr<<"consumer : read error "<<std::strerror(errno)<<std::endl;
+                ::close(fd);
+                return 1;
+            }
+            if(n==0){
+                std::cerr<<"consumer : server closed"<<std::endl;
+                ::close(fd);
+                return 1;
+            }
+            buf.insert(buf.end(),tmpbuf,tmpbuf+n);
+        }
+        std::vector<std::pair<uint64_t,std::string>> msgs;
+        std::string errstr;
+        if(!decode_fetch_resp(f,msgs,errstr)){
+            std::cerr<<"consumer : "<<errstr<<std::endl;
+            if(!follow) break;
+            std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms));
+            continue;   
+            
+        }
+        for(const auto& p:msgs){
+            std::cout<<p.first<<": "<<p.second<<std::endl;
+        }
+        if(!msgs.empty()){
+            offset=msgs.back().first+1;
+        }else{
+            if(!follow) break;
+            std::this_thread::sleep_for(std::chrono::milliseconds(interval_ms));
         }
     }
     ::close(fd);
